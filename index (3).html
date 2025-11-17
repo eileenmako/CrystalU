@@ -1,0 +1,2392 @@
+<html lang="en"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crystal U - Crystals Aligned With Your Birth and Purpose</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP for animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <!-- Stripe for payments -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --primary-color: #8A2BE2;
+            --secondary-color: #4B0082;
+            --accent-color: #FFD700;
+            --light-color: #F8F0FF;
+            --dark-color: #1A0033;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f9f5ff;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-section {
+            background-image: url('https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/0a344666e2a84e1ca8f2a9b0a0460a3e~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&rk3s=8e244e95&rrcfp=f06b921b&x-expires=1765269476&x-signature=FiZJfK%2B80Hfw6CC2QBoqcA4aIyc%3D');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            height: 100vh;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(138, 43, 226, 0.7), rgba(26, 0, 51, 0.9));
+            z-index: 1;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: transparent;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+        }
+        
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(138, 43, 226, 0.3);
+        }
+        
+        .btn-gold {
+            background-color: var(--accent-color);
+            color: var(--dark-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid var(--accent-color);
+        }
+        
+        .btn-gold:hover {
+            background-color: transparent;
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-image {
+            height: 250px;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+        
+        .card:hover .card-image img {
+            transform: scale(1.1);
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .section-title.centered::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .crystal-icon {
+            width: 60px;
+            height: 60px;
+            background-color: rgba(138, 43, 226, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-card:hover .crystal-icon {
+            background-color: var(--primary-color);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        .testimonial-card {
+            background-color: white;
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 5rem;
+            color: rgba(138, 43, 226, 0.1);
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            line-height: 1;
+        }
+        
+        .star-rating {
+            color: var(--accent-color);
+        }
+        
+        .bg-purple {
+            background-color: var(--primary-color);
+        }
+        
+        .bg-dark-purple {
+            background-color: var(--secondary-color);
+        }
+        
+        .text-purple {
+            color: var(--primary-color);
+        }
+        
+        .text-gold {
+            color: var(--accent-color);
+        }
+        
+        .border-purple {
+            border-color: var(--primary-color);
+        }
+        
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .active-nav::after {
+            width: 100%;
+        }
+        
+        /* Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .chatbot-button {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(138, 43, 226, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .chatbot-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(138, 43, 226, 0.4);
+        }
+        
+        .chatbot-popup {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        .chatbot-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 1rem;
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+        }
+        
+        .bot-message {
+            background-color: #f1f1f1;
+            border-top-left-radius: 0;
+            align-self: flex-start;
+        }
+        
+        .user-message {
+            background-color: var(--primary-color);
+            color: white;
+            border-top-right-radius: 0;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 2rem;
+            margin-right: 0.5rem;
+        }
+        
+        .chatbot-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* 3D Crystal Animation */
+        #crystal-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+        
+        /* Product Filter */
+        .filter-btn {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            margin: 0 0.5rem 0.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        /* Cart Styles */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-item-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            margin-right: 1rem;
+        }
+        
+        .cart-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .cart-item-details {
+            flex: 1;
+        }
+        
+        .cart-item-price {
+            font-weight: 600;
+            margin: 0 1rem;
+        }
+        
+        .cart-item-quantity {
+            display: flex;
+            align-items: center;
+        }
+        
+        .cart-item-quantity button {
+            width: 30px;
+            height: 30px;
+            border: 1px solid #ddd;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .cart-item-quantity input {
+            width: 50px;
+            text-align: center;
+            border: none;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            padding: 0.5rem 0;
+        }
+        
+        .cart-item-remove {
+            color: #ff4d4f;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        /* Checkout Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+            outline: none;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .hero-section {
+                height: auto;
+                padding: 6rem 0;
+            }
+            
+            .chatbot-popup {
+                width: 300px;
+                height: 450px;
+                right: -10px;
+            }
+            
+            .desktop-menu {
+                display: none;
+            }
+            
+            .mobile-menu-button {
+                display: block;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .mobile-menu-button {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: none;
+            }
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 1000;
+            padding: 2rem;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-menu.active {
+            transform: translateX(0);
+        }
+        
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .mobile-menu-nav {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .mobile-menu-nav a {
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+            color: #333;
+            text-decoration: none;
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .loading div {
+            position: absolute;
+            border: 4px solid var(--primary-color);
+            opacity: 1;
+            border-radius: 50%;
+            animation: loading 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+        }
+        
+        .loading div:nth-child(2) {
+            animation-delay: -0.5s;
+        }
+        
+        @keyframes loading {
+            0% {
+                top: 36px;
+                left: 36px;
+                width: 8px;
+                height: 8px;
+                opacity: 1;
+            }
+            100% {
+                top: 0px;
+                left: 0px;
+                width: 80px;
+                height: 80px;
+                opacity: 0;
+            }
+        }
+        
+        /* Crystal Ball Animation */
+        .crystal-ball {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+        }
+        
+        .crystal-ball img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
+        }
+        
+        /* Sparkles */
+        .sparkle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: sparkle 2s ease-in-out infinite;
+        }
+        
+        @keyframes sparkle {
+            0% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md fixed w-full z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#" class="flex items-center">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/cbcdbfc10f2746afa185b55c94914b2b~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&amp;rk3s=8e244e95&amp;rrcfp=f06b921b&amp;x-expires=1765269480&amp;x-signature=qqgdM7WZlZUsiOzeEK%2BFMAOJkrM%3D" alt="Crystal U Logo" class="h-12">
+                    </a>
+                </div>
+                
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="nav-link active-nav text-gray-800 hover:text-purple font-medium">Home</a>
+                    <a href="#products" class="nav-link text-gray-800 hover:text-purple font-medium">Shop</a>
+                    <a href="#about" class="nav-link text-gray-800 hover:text-purple font-medium">About</a>
+                    <a href="#contact" class="nav-link text-gray-800 hover:text-purple font-medium">Contact</a>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-gray-800 hover:text-purple">
+                        <i class="fas fa-search text-xl"></i>
+                    </a>
+                    <a href="#" class="text-gray-800 hover:text-purple">
+                        <i class="fas fa-user text-xl"></i>
+                    </a>
+                    <a href="#cart" class="text-gray-800 hover:text-purple relative">
+                        <i class="fas fa-shopping-bag text-xl"></i>
+                        <span class="absolute -top-2 -right-2 bg-purple text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold leading-none cart-count" style="display: none;">1</span>
+                    </a>
+                    <button class="mobile-menu-button text-gray-800 md:hidden">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <div class="mobile-menu-header">
+            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/cbcdbfc10f2746afa185b55c94914b2b~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&amp;rk3s=8e244e95&amp;rrcfp=f06b921b&amp;x-expires=1765269480&amp;x-signature=qqgdM7WZlZUsiOzeEK%2BFMAOJkrM%3D" alt="Crystal U Logo" class="h-10">
+            <button class="mobile-menu-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="mobile-menu-nav">
+            <a href="#" class="text-gray-800 hover:text-purple font-medium">Home</a>
+            <a href="#products" class="text-gray-800 hover:text-purple font-medium">Shop</a>
+            <a href="#about" class="text-gray-800 hover:text-purple font-medium">About</a>
+            <a href="#contact" class="text-gray-800 hover:text-purple font-medium">Contact</a>
+            <a href="#" class="text-gray-800 hover:text-purple font-medium">My Account</a>
+            <a href="#cart" class="text-gray-800 hover:text-purple font-medium">Cart</a>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero-section flex items-center justify-center">
+        <canvas id="crystal-canvas"></canvas>
+        <div class="hero-content container mx-auto px-4 text-center text-white">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4" style="font-size: 64px;">Where Crystals Meet the Cosmos</h1>
+            <p class="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">Discover jewelry aligned with your birth chart and intentions.</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#products" class="btn-gold">Shop Now</a>
+                <a href="#" id="open-chatbot" class="btn-secondary">Find Your Crystal</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title centered text-3xl md:text-4xl font-bold text-center mb-12">Why Choose Crystal U</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="feature-card text-center p-6 fade-in">
+                    <div class="crystal-icon mx-auto">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Personalized Alignment</h3>
+                    <p class="text-gray-600">Each crystal is carefully selected based on your birth chart and personal needs, creating a unique energy connection.</p>
+                </div>
+                <div class="feature-card text-center p-6 fade-in" style="transition-delay: 0.2s;">
+                    <div class="crystal-icon mx-auto">
+                        <i class="fas fa-gem"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Authentic Crystals</h3>
+                    <p class="text-gray-600">We source only high-quality, ethically mined crystals, ensuring their natural energy is preserved and enhanced.</p>
+                </div>
+                <div class="feature-card text-center p-6 fade-in" style="transition-delay: 0.4s;">
+                    <div class="crystal-icon mx-auto">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">AI Crystal Advisor</h3>
+                    <p class="text-gray-600">Our intelligent chatbot uses astrology and numerology to recommend the perfect crystals for your journey.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- How It Works Section -->
+    <section class="py-16 bg-purple text-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title centered text-3xl md:text-4xl font-bold text-center mb-12">How It Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="text-center fade-in">
+                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Share Your Details</h3>
+                    <p>Chat with our CrystalBot and provide your birth date, time, location, and intentions.</p>
+                </div>
+                <div class="text-center fade-in" style="transition-delay: 0.2s;">
+                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Get Personalized Recommendations</h3>
+                    <p>Our AI analyzes your cosmic profile to suggest crystals that align with your energy.</p>
+                </div>
+                <div class="text-center fade-in" style="transition-delay: 0.4s;">
+                    <div class="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Wear Your Intentions</h3>
+                    <p>Purchase your recommended crystals and wear them as a reminder of your path and purpose.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products Section -->
+    <section id="products" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title centered text-3xl md:text-4xl font-bold text-center mb-12">Featured Crystals</h2>
+            
+            <!-- Product Filters -->
+            <div class="flex flex-wrap justify-center mb-8">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="love">Love &amp; Relationships</button>
+                <button class="filter-btn" data-filter="career">Career &amp; Success</button>
+                <button class="filter-btn" data-filter="health">Health &amp; Wellness</button>
+                <button class="filter-btn" data-filter="spirituality">Spirituality</button>
+            </div>
+            
+            <!-- Products Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Product 1 -->
+                <div class="card product-item fade-in" data-category="love">
+                    <div class="card-image">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/a03a76c91b854c40872c895d77d9f91c~tplv-a9rns2rl98-image.image?rcl=202511100724142D68618DD4677D29077B&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763335458&amp;x-signature=U2xbHEqw8Inj2y0FHny5hrPaeeU%3D" alt="Rose Quartz Heart Pendant">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Rose Quartz Heart Pendant</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(42 reviews)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Opens the heart chakra, attracting love and compassion. Perfect for those seeking emotional healing.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple">$45.00</span>
+                            <button class="add-to-cart btn-primary" data-id="1" data-name="Rose Quartz Heart Pendant" data-price="45.00" data-image="https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 2 -->
+                <div class="card product-item fade-in" style="transition-delay: 0.1s;" data-category="career">
+                    <div class="card-image">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/1951d0852f6740ddb959031875ff04fc~tplv-a9rns2rl98-image.image?rcl=20251110072533984317BEF1678AC24A4C&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763335537&amp;x-signature=39QD54YSbbdrtrfwUez1%2BES%2B3cQ%3D" alt="Citrine Success Bracelet">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Citrine Success Bracelet</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(36 reviews)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Known as the "merchant's stone," citrine attracts wealth, success, and abundance in career endeavors.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple">$38.00</span>
+                            <button class="add-to-cart btn-primary" data-id="2" data-name="Citrine Success Bracelet" data-price="38.00" data-image="https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 3 -->
+                <div class="card product-item fade-in" style="transition-delay: 0.2s;" data-category="spirituality">
+                    <div class="card-image">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/cff29ba5e4e44856a6b8bb7a088bfac5~tplv-a9rns2rl98-image.image?rcl=20251110072631FFD9CE7AA6530834F068&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763335595&amp;x-signature=%2BaMioxZAJ5k9rZQtQm3mo%2BD9JBA%3D" alt="Amethyst Crown Chakra Pendant">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Amethyst Crown Chakra Pendant</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(28 reviews)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">Enhances spiritual awareness, intuition, and connection to higher consciousness. Ideal for meditation.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple">$52.00</span>
+                            <button class="add-to-cart btn-primary" data-id="3" data-name="Amethyst Crown Chakra Pendant" data-price="52.00" data-image="https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 4 -->
+                <div class="card product-item fade-in" style="transition-delay: 0.3s;" data-category="health">
+                    <div class="card-image">
+                        <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/0b3977b4d1094c8aa6888110c9cb5fb2~tplv-a9rns2rl98-image.image?rcl=20251110072720BB10D8384ED0DDD18B81&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763335644&amp;x-signature=JZxwspvWo%2F5T4PwvfRQv4SwynKI%3D" alt="Clear Quartz Healing Wand">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Clear Quartz Healing Wand</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(45 reviews)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">The "master healer" crystal that amplifies energy, aids in clarity of thought, and balances all chakras.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple">$48.00</span>
+                            <button class="add-to-cart btn-primary" data-id="4" data-name="Clear Quartz Healing Wand" data-price="48.00" data-image="https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product 5 - Planetary Blindbox -->
+                <div class="card product-item fade-in" style="transition-delay: 0.4s;" data-category="spirituality">
+                    <div class="card-image">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/8e6421602ea2485aa450f8e9f9733db1~tplv-a9rns2rl98-image.image?rcl=20251110073118289BF40D09CFF632779E&amp;rk3s=8e244e95&amp;rrcfp=e75484ac&amp;x-expires=1763335881&amp;x-signature=Tzp6%2FjwaXkDDjmO68FcNdkpaROQ%3D" alt="Planetary Blindbox">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">Planetary Blindbox</h3>
+                        <div class="flex items-center mb-2">
+                            <div class="star-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="text-sm text-gray-500 ml-2">(29 reviews)</span>
+                        </div>
+                        <p class="text-gray-600 mb-4">A mysterious collection of crystals aligned with celestial energies. Each box contains a surprise crystal, personalized reading, and small gift.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-2xl font-bold text-purple">$99.00</span>
+                            <button class="add-to-cart btn-primary" data-id="5" data-name="Planetary Blindbox" data-price="99.00" data-image="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/b6f0e4c1c788426a932844bff63e2433~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&amp;rk3s=8e244e95&amp;rrcfp=f06b921b&amp;x-expires=1765269476&amp;x-signature=BUKKBcdBVe0dni8MsrZ8DZQCdEo%3D">Add to Cart</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+            </div>
+        </div>
+    </section>
+    
+    <!-- Crystal Alignment Section -->
+    <section class="py-16 bg-gradient-to-r from-purple to-dark-purple text-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <div class="crystal-ball">
+                        <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/b6f0e4c1c788426a932844bff63e2433~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&amp;rk3s=8e244e95&amp;rrcfp=f06b921b&amp;x-expires=1765269476&amp;x-signature=BUKKBcdBVe0dni8MsrZ8DZQCdEo%3D" alt="Crystal Ball">
+                        <div class="sparkle" style="top: 30%; left: 20%; animation-delay: 0s;"></div>
+                        <div class="sparkle" style="top: 60%; left: 70%; animation-delay: 0.5s;"></div>
+                        <div class="sparkle" style="top: 20%; left: 60%; animation-delay: 1s;"></div>
+                        <div class="sparkle" style="top: 70%; left: 30%; animation-delay: 1.5s;"></div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold mb-6" style="color: rgb(10, 10, 10);">Find Your Perfect Crystal Alignment</h2>
+                    <p class="text-lg mb-6" style="color: rgb(5, 5, 5);">Our AI-powered CrystalBot analyzes your birth chart and personal intentions to recommend crystals that resonate with your unique energy frequency.</p>
+                    <p class="text-lg mb-8" style="color: rgb(5, 5, 5);">Whether you're seeking love, career success, spiritual growth, or emotional healing, we'll help you find the perfect crystals to support your journey.</p>
+                    <button id="open-chatbot-2" class="btn-gold">Start Your Crystal Reading</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="section-title centered text-3xl md:text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card fade-in">
+                    <div class="star-rating mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The Rose Quartz pendant I purchased has brought so much positivity into my relationships. I've noticed a significant shift in how I connect with others."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple rounded-full flex items-center justify-center text-white font-bold">
+                            L
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Lisa M.</h4>
+                            <p class="text-sm text-gray-500">New York, USA</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card fade-in" style="transition-delay: 0.2s;">
+                    <div class="star-rating mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The Citrine bracelet has been a game-changer for my career. Since wearing it, I've received two promotions and feel more confident in my abilities."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple rounded-full flex items-center justify-center text-white font-bold">
+                            J
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">James K.</h4>
+                            <p class="text-sm text-gray-500">London, UK</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card fade-in" style="transition-delay: 0.4s;">
+                    <div class="star-rating mb-4">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-gray-600 mb-6">"The CrystalBot recommended an Amethyst pendant for my spiritual journey, and it's been incredible. My meditation practice has deepened significantly."</p>
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 bg-purple rounded-full flex items-center justify-center text-white font-bold">
+                            S
+                        </div>
+                        <div class="ml-4">
+                            <h4 class="font-bold">Sarah T.</h4>
+                            <p class="text-sm text-gray-500">Sydney, Australia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-light-color">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0">
+                    <h2 class="section-title text-3xl md:text-4xl font-bold mb-6">Our Brand Ethos</h2>
+                    <p class="text-lg mb-4">At the heart of our brand is the belief that every soul carries a unique vibration — shaped by birth, purpose, and energy. We craft crystals that reflect you — your story, your journey, your inner rhythm.</p>
+                    <p class="text-lg mb-4">Each piece is designed with intention, blending the wisdom of astrology, numerology, and natural crystal energy to create a personal harmony between who you are and what you are meant to become.</p>
+                    <p class="text-lg mb-6">We believe that beauty has meaning when it connects to the self. That every stone holds energy, and when chosen with awareness, it becomes more than jewelry — it becomes a guide, a reminder, a source of balance.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <div class="bg-white p-4 rounded-lg shadow-md text-center flex-1">
+                            <h3 class="text-xl font-bold text-purple mb-2">Your birthdate</h3>
+                            <p>The blueprint</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-md text-center flex-1">
+                            <h3 class="text-xl font-bold text-purple mb-2">Your purpose</h3>
+                            <p>The path</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-lg shadow-md text-center flex-1">
+                            <h3 class="text-xl font-bold text-purple mb-2">Your crystal</h3>
+                            <p>The connection</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:w-1/2 md:pl-12">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="overflow-hidden rounded-lg">
+                            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/2e6247835ece49f1b23310fb8b207570~tplv-a9rns2rl98-image.image?rcl=202511100752324C0EEBD8C83509D3E715&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763337156&amp;x-signature=H%2BivK749SEo9abCGqkMjubVgCmE%3D" alt="Crystal Jewelry" class="w-full h-64 object-cover transform hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="overflow-hidden rounded-lg">
+                            <img src="https://p9-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/bc7f6e47950d426bb4fbf40d99d96e74~tplv-a9rns2rl98-image.image?rcl=20251110075531B22B40192EC158AE3CA1&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763337334&amp;x-signature=2AlXzneD%2BZzYS3a2kP1GsR1HRHI%3D" alt="Crystal Jewelry" class="w-full h-64 object-cover transform hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="overflow-hidden rounded-lg">
+                            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/fdc65112a96f408ebdcac639f846a3f9~tplv-a9rns2rl98-image.image?rcl=20251110075612FA746353DA3B0BC74FA4&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763337376&amp;x-signature=vBpy0TQxUCxc2DEyGe9oBstE94Y%3D" alt="Crystal Jewelry" class="w-full h-64 object-cover transform hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="overflow-hidden rounded-lg">
+                            <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/code_assistant/9f3a7c130a57463eb540cfc875e80e77~tplv-a9rns2rl98-image.image?rcl=202511100759031F89334F2F6EF233C34E&amp;rk3s=8e244e95&amp;rrcfp=2609e108&amp;x-expires=1763337547&amp;x-signature=CBKHA6L%2B7trTt%2BT%2FdhAXoO61mW4%3D" alt="Crystal Jewelry" class="w-full h-64 object-cover transform hover:scale-110 transition-transform duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="py-16 bg-purple text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Join Our Crystal Community</h2>
+            <p class="text-lg mb-8 max-w-2xl mx-auto">Subscribe to our newsletter for exclusive offers, crystal wisdom, and personalized recommendations based on astrological events.</p>
+            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-2">
+                <input type="email" placeholder="Your email address" class="form-input flex-1" required="">
+                <button type="submit" class="btn-gold whitespace-nowrap">Subscribe</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-dark-purple text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <img src="https://p3-flow-imagex-sign.byteimg.com/tos-cn-i-a9rns2rl98/rc/pc/super_tool/cbcdbfc10f2746afa185b55c94914b2b~tplv-a9rns2rl98-image.image?rcl=20251109163654813607F0C0A1C93C5B22&amp;rk3s=8e244e95&amp;rrcfp=f06b921b&amp;x-expires=1765269480&amp;x-signature=qqgdM7WZlZUsiOzeEK%2BFMAOJkrM%3D" alt="Crystal U Logo" class="h-12 mb-4">
+                    <p class="mb-4">Crystals Aligned With Your Birth and Purpose</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-gold"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white hover:text-gold"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white hover:text-gold"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white hover:text-gold"><i class="fab fa-pinterest"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Shop</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#products" class="hover:text-gold">All Crystals</a></li>
+                        <li><a href="#products" class="hover:text-gold">By Intention</a></li>
+                        <li><a href="#" onclick="document.getElementById('chatbot-popup').style.display='flex'; return false;" class="hover:text-gold">By Birth Chart</a></li>
+                        <li><a href="#products" class="hover:text-gold">New Arrivals</a></li>
+                        <li><a href="#products" class="hover:text-gold">Gift Cards</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">About</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="hover:text-gold">Our Story</a></li>
+                        <li><a href="#about" class="hover:text-gold">Crystal Wisdom</a></li>
+                        <li><a href="#about" class="hover:text-gold">Astrology &amp; Crystals</a></li>
+                        <li><a href="#about" class="hover:text-gold">Sustainability</a></li>
+                        <li><a href="#about" class="hover:text-gold">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">Customer Service</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#contact" class="hover:text-gold">Contact Us</a></li>
+                        <li><a href="#contact" class="hover:text-gold">FAQs</a></li>
+                        <li><a href="#contact" class="hover:text-gold">Shipping &amp; Returns</a></li>
+                        <li><a href="#contact" class="hover:text-gold">Track Order</a></li>
+                        <li><a href="#contact" class="hover:text-gold">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-purple mt-8 pt-8 text-center">
+                <p>© 2023 Crystal U. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-button" id="chatbot-toggle">
+            <i class="fas fa-comments text-2xl"></i>
+        </div>
+        <div class="chatbot-popup" id="chatbot-popup">
+            <div class="chatbot-header">
+                <div class="flex items-center">
+                    <i class="fas fa-robot mr-2"></i>
+                    <h3>CrystalBot</h3>
+                </div>
+                <button class="close-button" id="close-chatbot">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chatbot-messages" id="chatbot-messages">
+                <div class="message bot-message">
+                    🌙 ✨ Hello, Cosmic Soul ✨<br><br>
+                    I'm CrystalBot! your personal crystal advisor.<br><br>
+                    To find your perfect crystal match, please share:<br>
+                    🔹 Your birth date (MM/DD)<br>
+                    🔹 Your birth time (optional)<br>
+                    🔹 Your birth location (city, country)<br><br>
+                    Based on your astrological profile, I'll recommend specific crystal pieces from our collection that align with your energy and intentions.<br><br>
+                    Let's begin your crystal journey! 🔮
+                </div>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbot-input" placeholder="Enter your birth date (MM/DD)..." autocomplete="off">
+                <button id="chatbot-send">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Shopping Cart Modal -->
+    <div id="cart" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Your Cart</h2>
+                    <button id="close-cart" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div id="cart-items">
+                    <!-- Cart items will be added here dynamically -->
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg" alt="Rose Quartz Heart Pendant">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="font-bold">Rose Quartz Heart Pendant</h3>
+                            <p class="text-sm text-gray-500">Love &amp; Relationships</p>
+                        </div>
+                        <div class="cart-item-price">$45.00</div>
+                        <div class="cart-item-quantity">
+                            <button>-</button>
+                            <input type="number" value="1" min="1">
+                            <button>+</button>
+                        </div>
+                        <div class="cart-item-remove">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg" alt="Citrine Success Bracelet">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="font-bold">Citrine Success Bracelet</h3>
+                            <p class="text-sm text-gray-500">Career &amp; Success</p>
+                        </div>
+                        <div class="cart-item-price">$38.00</div>
+                        <div class="cart-item-quantity">
+                            <button>-</button>
+                            <input type="number" value="1" min="1">
+                            <button>+</button>
+                        </div>
+                        <div class="cart-item-remove">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                            <img src="https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg" alt="Amethyst Crown Chakra Pendant">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="font-bold">Amethyst Crown Chakra Pendant</h3>
+                            <p class="text-sm text-gray-500">Spirituality</p>
+                        </div>
+                        <div class="cart-item-price">$52.00</div>
+                        <div class="cart-item-quantity">
+                            <button>-</button>
+                            <input type="number" value="1" min="1">
+                            <button>+</button>
+                        </div>
+                        <div class="cart-item-remove">
+                            <i class="fas fa-trash-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="border-t mt-6 pt-6">
+                    <div class="flex justify-between mb-2">
+                        <span>Subtotal</span>
+                        <span class="font-bold cart-subtotal">$0.00</span>
+                    </div>
+                    <div class="flex justify-between mb-6">
+                        <span>Shipping</span>
+                        <span class="font-bold">Free</span>
+                    </div>
+                    <div class="flex justify-between mb-6">
+                        <span class="text-xl font-bold">Total</span>
+                        <span class="text-xl font-bold cart-total">$0.00</span>
+                    </div>
+                    <button id="checkout-button" class="btn-primary w-full">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Checkout Modal -->
+    <div id="checkout" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-bold">Checkout</h2>
+                    <button id="close-checkout" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Billing Information</h3>
+                        <form id="checkout-form">
+                            <div class="form-group">
+                                <label class="form-label" for="name">Full Name</label>
+                                <input type="text" id="name" class="form-input" required="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" id="email" class="form-input" required="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="address">Address</label>
+                                <input type="text" id="address" class="form-input" required="">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="city">City</label>
+                                <input type="text" id="city" class="form-input" required="">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <label class="form-label" for="state">State</label>
+                                    <input type="text" id="state" class="form-input" required="">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="zip">ZIP Code</label>
+                                    <input type="text" id="zip" class="form-input" required="">
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold mb-4">Payment Method</h4>
+                                
+                                <!-- Payment method options -->
+                                <div class="space-y-3">
+                                    <!-- Credit Card -->
+                                    <div class="payment-option flex items-center p-3 border rounded-lg cursor-pointer bg-blue-50 border-blue-200">
+                                        <input type="radio" id="payment-card" name="payment-method" value="card" class="mr-3" checked="">
+                                        <label for="payment-card" class="flex items-center cursor-pointer flex-1">
+                                            <div class="flex items-center mr-3">
+                                                <i class="fas fa-credit-card text-blue-600 text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Credit / Debit Card</span>
+                                                <p class="text-sm text-gray-500">Visa, Mastercard, American Express</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- PayPal -->
+                                    <div class="payment-option flex items-center p-3 border rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-200">
+                                        <input type="radio" id="payment-paypal" name="payment-method" value="paypal" class="mr-3">
+                                        <label for="payment-paypal" class="flex items-center cursor-pointer flex-1">
+                                            <div class="flex items-center mr-3">
+                                                <i class="fab fa-paypal text-blue-800 text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">PayPal</span>
+                                                <p class="text-sm text-gray-500">Pay securely with PayPal</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- Apple Pay -->
+                                    <div class="payment-option flex items-center p-3 border rounded-lg cursor-pointer hover:bg-blue-50 hover:border-blue-200">
+                                        <input type="radio" id="payment-applepay" name="payment-method" value="applepay" class="mr-3">
+                                        <label for="payment-applepay" class="flex items-center cursor-pointer flex-1">
+                                            <div class="flex items-center mr-3">
+                                                <i class="fab fa-apple-pay text-black text-xl"></i>
+                                            </div>
+                                            <div>
+                                                <span class="font-medium">Apple Pay</span>
+                                                <p class="text-sm text-gray-500">Fast and secure checkout</p>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Credit Card Form -->
+                                <div id="card-form" class="mt-4">
+                                    <div class="form-group">
+                                        <label class="form-label" for="card-element">Card Details</label>
+                                        <div id="card-element" class="form-input border border-gray-300 rounded-md p-3"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- PayPal Form (hidden by default) -->
+                                <div id="paypal-form" class="mt-4 hidden">
+                                    <p class="text-center py-4 text-gray-600">You will be redirected to PayPal to complete your payment.</p>
+                                </div>
+                                
+                                <!-- Apple Pay Form (hidden by default) -->
+                                <div id="applepay-form" class="mt-4 hidden">
+                                    <p class="text-center py-4 text-gray-600">Complete your purchase with Apple Pay.</p>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">Order Summary</h3>
+                        <div id="order-summary">
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg" alt="Rose Quartz Heart Pendant">
+                                </div>
+                                <div class="cart-item-details">
+                                    <h3 class="font-bold">Rose Quartz Heart Pendant</h3>
+                                    <p class="text-sm text-gray-500">Love &amp; Relationships</p>
+                                </div>
+                                <div class="cart-item-price">$45.00</div>
+                            </div>
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg" alt="Citrine Success Bracelet">
+                                </div>
+                                <div class="cart-item-details">
+                                    <h3 class="font-bold">Citrine Success Bracelet</h3>
+                                    <p class="text-sm text-gray-500">Career &amp; Success</p>
+                                </div>
+                                <div class="cart-item-price">$38.00</div>
+                            </div>
+                            <div class="cart-item">
+                                <div class="cart-item-image">
+                                    <img src="https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg" alt="Amethyst Crown Chakra Pendant">
+                                </div>
+                                <div class="cart-item-details">
+                                    <h3 class="font-bold">Amethyst Crown Chakra Pendant</h3>
+                                    <p class="text-sm text-gray-500">Spirituality</p>
+                                </div>
+                                <div class="cart-item-price">$52.00</div>
+                            </div>
+                        </div>
+                        <div class="border-t mt-6 pt-6">
+                            <div class="flex justify-between mb-2">
+                                <span>Subtotal</span>
+                                <span class="font-bold cart-subtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between mb-6">
+                                <span>Shipping</span>
+                                <span class="font-bold">Free</span>
+                            </div>
+                            <div class="flex justify-between mb-6">
+                                <span class="text-xl font-bold">Total</span>
+                                <span class="text-xl font-bold cart-total">$0.00</span>
+                            </div>
+                            <button id="pay-button" class="btn-primary w-full">Pay Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Success Modal -->
+    <div id="success" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-lg w-full max-w-md p-6 text-center">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-green-500 text-3xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold mb-2">Payment Successful!</h2>
+            <p class="mb-6">Thank you for your purchase. Your order has been confirmed.</p>
+            <button id="close-success" class="btn-primary">Continue Shopping</button>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Stripe
+        const stripe = Stripe('pk_test_your_publishable_key_here');
+        const elements = stripe.elements();
+        const card = elements.create('card');
+        card.mount('#card-element');
+        
+        // Cart functionality
+        let cartItems = [];
+        
+        // Initialize cart from localStorage if available
+        function initCart() {
+            // Clear any existing cart data to start fresh
+            localStorage.removeItem('crystalUCart');
+            cartItems = [];
+            updateCart();
+        }
+        
+        // Update cart display
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const orderSummaryContainer = document.getElementById('order-summary');
+            const cartCount = document.querySelector('.cart-count');
+            
+            // Clear current cart items
+            cartItemsContainer.innerHTML = '';
+            if (orderSummaryContainer) {
+                orderSummaryContainer.innerHTML = '';
+            }
+            
+            // Update cart count
+            const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
+            if (cartCount) {
+                cartCount.textContent = totalItems;
+                cartCount.style.display = totalItems > 0 ? 'block' : 'none';
+            }
+            
+            // If cart is empty, show empty message
+            if (cartItems.length === 0) {
+                const emptyMessage = document.createElement('div');
+                emptyMessage.classList.add('text-center', 'py-8');
+                emptyMessage.innerHTML = `
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Your cart is empty</p>
+                    <a href="#products" class="btn-gold mt-4 inline-block">Start Shopping</a>
+                `;
+                cartItemsContainer.appendChild(emptyMessage);
+                
+                // Update totals
+                document.querySelector('.cart-subtotal').textContent = '$0.00';
+                document.querySelector('.cart-total').textContent = '$0.00';
+                
+                // Disable checkout button
+                document.getElementById('checkout-button').disabled = true;
+                document.getElementById('checkout-button').classList.add('opacity-50', 'cursor-not-allowed');
+                
+                return;
+            }
+            
+            // Enable checkout button
+            document.getElementById('checkout-button').disabled = false;
+            document.getElementById('checkout-button').classList.remove('opacity-50', 'cursor-not-allowed');
+            
+            // Add each item to cart
+            let subtotal = 0;
+            
+            cartItems.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                
+                // Create cart item element
+                const cartItem = document.createElement('div');
+                cartItem.classList.add('cart-item');
+                cartItem.innerHTML = `
+                    <div class="cart-item-image">
+                        <img src="${item.image}" alt="${item.name}">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="font-bold">${item.name}</h3>
+                        <p class="text-sm text-gray-500">${item.category}</p>
+                    </div>
+                    <div class="cart-item-price">$${item.price.toFixed(2)}</div>
+                    <div class="cart-item-quantity">
+                        <button class="decrease-quantity" data-id="${item.id}">-</button>
+                        <input type="number" value="${item.quantity}" min="1" class="update-quantity" data-id="${item.id}">
+                        <button class="increase-quantity" data-id="${item.id}">+</button>
+                    </div>
+                    <div class="cart-item-remove">
+                        <i class="fas fa-trash-alt remove-item" data-id="${item.id}"></i>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItem);
+                
+                // Add to order summary if available
+                if (orderSummaryContainer) {
+                    const orderItem = document.createElement('div');
+                    orderItem.classList.add('cart-item');
+                    orderItem.innerHTML = `
+                        <div class="cart-item-image">
+                            <img src="${item.image}" alt="${item.name}">
+                        </div>
+                        <div class="cart-item-details">
+                            <h3 class="font-bold">${item.name}</h3>
+                            <p class="text-sm text-gray-500">${item.category} × ${item.quantity}</p>
+                        </div>
+                        <div class="cart-item-price">$${itemTotal.toFixed(2)}</div>
+                    `;
+                    orderSummaryContainer.appendChild(orderItem);
+                }
+            });
+            
+            // Update totals
+            document.querySelector('.cart-subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.querySelector('.cart-total').textContent = `$${subtotal.toFixed(2)}`;
+            
+            // If order summary exists, update its totals
+            if (orderSummaryContainer) {
+                const summaryTotals = orderSummaryContainer.nextElementSibling;
+                if (summaryTotals) {
+                    summaryTotals.querySelector('.cart-subtotal')?.setAttribute('data-subtotal', subtotal.toFixed(2));
+                    summaryTotals.querySelector('.cart-total')?.setAttribute('data-total', subtotal.toFixed(2));
+                }
+            }
+            
+            // Save cart to localStorage
+            localStorage.setItem('crystalUCart', JSON.stringify(cartItems));
+            
+            // Add event listeners to quantity buttons and remove buttons
+            document.querySelectorAll('.decrease-quantity').forEach(button => {
+                button.addEventListener('click', decreaseQuantity);
+            });
+            
+            document.querySelectorAll('.increase-quantity').forEach(button => {
+                button.addEventListener('click', increaseQuantity);
+            });
+            
+            document.querySelectorAll('.update-quantity').forEach(input => {
+                input.addEventListener('change', updateQuantity);
+            });
+            
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', removeItem);
+            });
+        }
+        
+        // Decrease item quantity
+        function decreaseQuantity() {
+            const id = parseInt(this.getAttribute('data-id'));
+            const item = cartItems.find(item => item.id === id);
+            
+            if (item && item.quantity > 1) {
+                item.quantity -= 1;
+                updateCart();
+            }
+        }
+        
+        // Increase item quantity
+        function increaseQuantity() {
+            const id = parseInt(this.getAttribute('data-id'));
+            const item = cartItems.find(item => item.id === id);
+            
+            if (item) {
+                item.quantity += 1;
+                updateCart();
+            }
+        }
+        
+        // Update item quantity from input
+        function updateQuantity() {
+            const id = parseInt(this.getAttribute('data-id'));
+            const item = cartItems.find(item => item.id === id);
+            let quantity = parseInt(this.value);
+            
+            // Ensure quantity is at least 1
+            quantity = Math.max(1, isNaN(quantity) ? 1 : quantity);
+            this.value = quantity;
+            
+            if (item) {
+                item.quantity = quantity;
+                updateCart();
+            }
+        }
+        
+        // Remove item from cart
+        function removeItem() {
+            const id = parseInt(this.getAttribute('data-id'));
+            cartItems = cartItems.filter(item => item.id !== id);
+            updateCart();
+        }
+        
+        // Initialize cart on page load
+        initCart();
+        
+        // Mobile Menu Toggle
+        document.querySelector('.mobile-menu-button').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.add('active');
+        });
+        
+        document.querySelector('.mobile-menu-close').addEventListener('click', function() {
+            document.querySelector('.mobile-menu').classList.remove('active');
+        });
+        
+        // Chatbot Toggle
+        document.getElementById('chatbot-toggle').addEventListener('click', function() {
+            document.getElementById('chatbot-popup').style.display = 'flex';
+        });
+        
+        document.getElementById('close-chatbot').addEventListener('click', function() {
+            document.getElementById('chatbot-popup').style.display = 'none';
+        });
+        
+        document.getElementById('open-chatbot').addEventListener('click', function() {
+            document.getElementById('chatbot-popup').style.display = 'flex';
+        });
+        
+        document.getElementById('open-chatbot-2').addEventListener('click', function() {
+            document.getElementById('chatbot-popup').style.display = 'flex';
+        });
+        
+        // Chatbot Functionality
+        document.getElementById('chatbot-send').addEventListener('click', sendMessage);
+        document.getElementById('chatbot-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        function sendMessage() {
+            const input = document.getElementById('chatbot-input');
+            const message = input.value.trim();
+            
+            if (message) {
+                // Add user message
+                addMessage(message, 'user');
+                input.value = '';
+                
+                // Simulate bot thinking
+                setTimeout(() => {
+                    // Generate bot response based on user input
+                    const botResponse = generateResponse(message);
+                    addMessage(botResponse, 'bot');
+                    
+                    // Scroll to bottom
+                    const messagesContainer = document.getElementById('chatbot-messages');
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 1000);
+            }
+        }
+        
+        function addMessage(message, type) {
+            const messagesContainer = document.getElementById('chatbot-messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(type === 'user' ? 'user-message' : 'bot-message');
+            messageElement.innerHTML = message;
+            messagesContainer.appendChild(messageElement);
+            
+            // Scroll to bottom
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        // 用户状态管理
+        let userState = {
+            birthDate: null,
+            birthTime: null,
+            birthLocation: null,
+            step: 'waiting_for_birth_date' // waiting_for_birth_date, waiting_for_birth_time, waiting_for_birth_location, completed
+        };
+        
+        // 星座与水晶对应关系
+        const zodiacCrystals = {
+            'aries': {
+                name: 'Aries',
+                dates: 'March 21 - April 19',
+                crystals: [
+                    {
+                        name: 'Red Jasper',
+                        description: 'Enhances courage and vitality, perfect for Aries\' dynamic energy',
+                        product: 'Red Jasper Courage Bracelet',
+                        price: '$42.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Carnelian',
+                        description: 'Boosts motivation and creativity, aligning with Aries\' pioneering spirit',
+                        product: 'Carnelian Motivation Pendant',
+                        price: '$48.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'taurus': {
+                name: 'Taurus',
+                dates: 'April 20 - May 20',
+                crystals: [
+                    {
+                        name: 'Rose Quartz',
+                        description: 'Promotes love and harmony, balancing Taurus\' practical nature',
+                        product: 'Rose Quartz Heart Pendant',
+                        price: '$45.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Emerald',
+                        description: 'Enhances prosperity and stability, resonating with Taurus\' values',
+                        product: 'Emerald Prosperity Ring',
+                        price: '$65.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'gemini': {
+                name: 'Gemini',
+                dates: 'May 21 - June 20',
+                crystals: [
+                    {
+                        name: 'Aquamarine',
+                        description: 'Enhances communication and clarity, supporting Gemini\'s intellectual nature',
+                        product: 'Aquamarine Communication Pendant',
+                        price: '$52.00',
+                        image: 'https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Citrine',
+                        description: 'Boosts mental agility and creativity, aligning with Gemini\'s versatile energy',
+                        product: 'Citrine Success Bracelet',
+                        price: '$38.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'cancer': {
+                name: 'Cancer',
+                dates: 'June 21 - July 22',
+                crystals: [
+                    {
+                        name: 'Moonstone',
+                        description: 'Enhances intuition and emotional balance, resonating with Cancer\'s lunar energy',
+                        product: 'Moonstone Intuition Pendant',
+                        price: '$55.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Pearl',
+                        description: 'Promotes nurturing and protection, aligning with Cancer\'s caring nature',
+                        product: 'Pearl Protection Bracelet',
+                        price: '$60.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'leo': {
+                name: 'Leo',
+                dates: 'July 23 - August 22',
+                crystals: [
+                    {
+                        name: 'Tiger\'s Eye',
+                        description: 'Enhances confidence and leadership, supporting Leo\'s bold nature',
+                        product: 'Tiger\'s Eye Confidence Bracelet',
+                        price: '$45.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Sunstone',
+                        description: 'Boosts vitality and positivity, aligning with Leo\'s radiant energy',
+                        product: 'Sunstone Vitality Pendant',
+                        price: '$50.00',
+                        image: 'https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'virgo': {
+                name: 'Virgo',
+                dates: 'August 23 - September 22',
+                crystals: [
+                    {
+                        name: 'Green Aventurine',
+                        description: 'Enhances healing and prosperity, supporting Virgo\'s nurturing nature',
+                        product: 'Green Aventurine Healing Bracelet',
+                        price: '$42.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Amazonite',
+                        description: 'Promotes clarity and balance, aligning with Virgo\'s analytical mind',
+                        product: 'Amazonite Clarity Pendant',
+                        price: '$48.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'libra': {
+                name: 'Libra',
+                dates: 'September 23 - October 22',
+                crystals: [
+                    {
+                        name: 'Lapis Lazuli',
+                        description: 'Enhances harmony and truth, supporting Libra\'s quest for balance',
+                        product: 'Lapis Lazuli Harmony Pendant',
+                        price: '$55.00',
+                        image: 'https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Pink Tourmaline',
+                        description: 'Promotes love and relationships, aligning with Libra\'s social nature',
+                        product: 'Pink Tourmaline Love Bracelet',
+                        price: '$52.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'scorpio': {
+                name: 'Scorpio',
+                dates: 'October 23 - November 21',
+                crystals: [
+                    {
+                        name: 'Obsidian',
+                        description: 'Enhances transformation and protection, supporting Scorpio\'s intense nature',
+                        product: 'Obsidian Transformation Bracelet',
+                        price: '$45.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Ruby',
+                        description: 'Boosts passion and vitality, aligning with Scorpio\'s powerful energy',
+                        product: 'Ruby Passion Pendant',
+                        price: '$65.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'sagittarius': {
+                name: 'Sagittarius',
+                dates: 'November 22 - December 21',
+                crystals: [
+                    {
+                        name: 'Blue Topaz',
+                        description: 'Enhances wisdom and expansion, supporting Sagittarius\' adventurous nature',
+                        product: 'Blue Topaz Wisdom Pendant',
+                        price: '$58.00',
+                        image: 'https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Turquoise',
+                        description: 'Promotes truth and protection, aligning with Sagittarius\' honest energy',
+                        product: 'Turquoise Protection Bracelet',
+                        price: '$48.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'capricorn': {
+                name: 'Capricorn',
+                dates: 'December 22 - January 19',
+                crystals: [
+                    {
+                        name: 'Garnet',
+                        description: 'Enhances discipline and success, supporting Capricorn\'s ambitious nature',
+                        product: 'Garnet Success Pendant',
+                        price: '$52.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Black Onyx',
+                        description: 'Promotes strength and stability, aligning with Capricorn\'s grounded energy',
+                        product: 'Black Onyx Strength Bracelet',
+                        price: '$45.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'aquarius': {
+                name: 'Aquarius',
+                dates: 'January 20 - February 18',
+                crystals: [
+                    {
+                        name: 'Amethyst',
+                        description: 'Enhances intuition and innovation, supporting Aquarius\' visionary nature',
+                        product: 'Amethyst Crown Chakra Pendant',
+                        price: '$52.00',
+                        image: 'https://img.alicdn.com/imgextra/i1/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y7_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Labradorite',
+                        description: 'Promotes transformation and creativity, aligning with Aquarius\' progressive energy',
+                        product: 'Labradorite Transformation Bracelet',
+                        price: '$48.00',
+                        image: 'https://img.alicdn.com/imgextra/i2/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y6_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            },
+            'pisces': {
+                name: 'Pisces',
+                dates: 'February 19 - March 20',
+                crystals: [
+                    {
+                        name: 'Selenite',
+                        description: 'Enhances spirituality and clarity, supporting Pisces\' intuitive nature',
+                        product: 'Selenite Spiritual Pendant',
+                        price: '$45.00',
+                        image: 'https://img.alicdn.com/imgextra/i3/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y8_!!2596621859.jpg',
+                        link: '#products'
+                    },
+                    {
+                        name: 'Larimar',
+                        description: 'Promotes peace and healing, aligning with Pisces\' compassionate energy',
+                        product: 'Larimar Peace Bracelet',
+                        price: '$55.00',
+                        image: 'https://img.alicdn.com/imgextra/i4/2596621859/O1CN01XZ1Z1g1Y8Z1Y8Z1Y9_!!2596621859.jpg',
+                        link: '#products'
+                    }
+                ]
+            }
+        };
+        
+        // 根据出生日期获取星座
+        function getZodiacSign(month, day) {
+            if ((month == 1 && day >= 20) || (month == 2 && day <= 18)) return 'aquarius';
+            if ((month == 2 && day >= 19) || (month == 3 && day <= 20)) return 'pisces';
+            if ((month == 3 && day >= 21) || (month == 4 && day <= 19)) return 'aries';
+            if ((month == 4 && day >= 20) || (month == 5 && day <= 20)) return 'taurus';
+            if ((month == 5 && day >= 21) || (month == 6 && day <= 20)) return 'gemini';
+            if ((month == 6 && day >= 21) || (month == 7 && day <= 22)) return 'cancer';
+            if ((month == 7 && day >= 23) || (month == 8 && day <= 22)) return 'leo';
+            if ((month == 8 && day >= 23) || (month == 9 && day <= 22)) return 'virgo';
+            if ((month == 9 && day >= 23) || (month == 10 && day <= 22)) return 'libra';
+            if ((month == 10 && day >= 23) || (month == 11 && day <= 21)) return 'scorpio';
+            if ((month == 11 && day >= 22) || (month == 12 && day <= 21)) return 'sagittarius';
+            if ((month == 12 && day >= 22) || (month == 1 && day <= 19)) return 'capricorn';
+        }
+        
+        // 解析日期格式 (MM/DD, MM-DD, MM.DD, Month Day)
+        function parseDate(dateStr) {
+            dateStr = dateStr.trim();
+            
+            // 尝试 MM/DD 或 MM-DD 或 MM.DD 格式
+            const regex1 = /^(\d{1,2})[\/\-\.](\d{1,2})$/;
+            const match1 = dateStr.match(regex1);
+            if (match1) {
+                const month = parseInt(match1[1]);
+                const day = parseInt(match1[2]);
+                if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                    return { month, day };
+                }
+            }
+            
+            // 尝试 Month Day 格式 (如 "March 21")
+            const regex2 = /^(\w+)\s+(\d{1,2})$/;
+            const match2 = dateStr.match(regex2);
+            if (match2) {
+                const monthNames = ['january', 'february', 'march', 'april', 'may', 'june', 
+                                   'july', 'august', 'september', 'october', 'november', 'december'];
+                const monthName = match2[1].toLowerCase();
+                const month = monthNames.indexOf(monthName) + 1;
+                const day = parseInt(match2[2]);
+                
+                if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+                    return { month, day };
+                }
+            }
+            
+            return null;
+        }
+        
+        // 生成水晶推荐消息
+        function generateCrystalRecommendation(zodiacSign) {
+            const zodiac = zodiacCrystals[zodiacSign];
+            if (!zodiac) return "I'm sorry, I couldn't determine your zodiac sign from the information provided. Please try again with your birth date in MM/DD format.";
+            
+            let message = `✨ <strong>${zodiac.name}</strong> (${zodiac.dates}) ✨<br><br>`;
+            message += `Based on your astrological profile, I've selected these crystals specifically for you:<br><br>`;
+            
+            // 添加推荐的水晶
+            zodiac.crystals.forEach((crystal, index) => {
+                message += `${index + 1}. <strong>${crystal.name}</strong><br>`;
+                message += `- ${crystal.description}<br>`;
+                message += `- <a href="${crystal.link}" class="text-purple underline">${crystal.product}</a> - ${crystal.price}<br><br>`;
+            });
+            
+            message += `These crystals are perfectly aligned with your ${zodiac.name} energy and can help enhance your natural strengths.<br><br>`;
+            message += `Would you like to add any of these recommended pieces to your cart? Or would you like more information about a specific crystal?`;
+            
+            return message;
+        }
+        
+        function generateResponse(message) {
+            // Simple keyword-based response system
+            message = message.toLowerCase();
+            
+            // 检查是否是关闭聊天的请求
+            if (message.includes('close') || message.includes('exit') || message.includes('bye') || message.includes('thank')) {
+                return "Thank you for chatting with CrystalBot! Feel free to explore our collection or start a new conversation anytime. Have a magical day! ✨";
+            }
+            
+            // 根据用户状态处理消息
+            if (userState.step === 'waiting_for_birth_date') {
+                // 尝试解析出生日期
+                const date = parseDate(message);
+                
+                if (date) {
+                    userState.birthDate = date;
+                    userState.step = 'waiting_for_birth_time';
+                    return `Thank you! I've noted your birth date: ${date.month}/${date.day}<br><br>Now, could you please share your birth time (if you know it)? This will help me provide even more accurate recommendations. If you don't know it, you can simply say "don't know".`;
+                } else {
+                    return "I'm sorry, I couldn't understand your birth date. Please enter it in MM/DD format (e.g., 03/21 for March 21st).";
+                }
+            } else if (userState.step === 'waiting_for_birth_time') {
+                // 用户提供了出生时间或表示不知道
+                if (message.includes('don\'t know') || message.includes('not sure') || message === 'no') {
+                    userState.birthTime = null;
+                } else {
+                    userState.birthTime = message;
+                }
+                
+                userState.step = 'waiting_for_birth_location';
+                return `Thank you for sharing that.<br><br>Could you also tell me your birth location (city and country)? This helps me align with your local cosmic energy.`;
+            } else if (userState.step === 'waiting_for_birth_location') {
+                // 用户提供了出生地点
+                userState.birthLocation = message;
+                userState.step = 'completed';
+                
+                // 根据出生日期确定星座
+                const zodiacSign = getZodiacSign(userState.birthDate.month, userState.birthDate.day);
+                
+                // 生成个性化的水晶推荐
+                return `Thank you for providing your information!<br><br>Birth Date: ${userState.birthDate.month}/${userState.birthDate.day}<br>Birth Time: ${userState.birthTime || 'Not provided'}<br>Birth Location: ${userState.birthLocation}<br><br>🔮 Analyzing your cosmic profile... 🔮<br><br>${generateCrystalRecommendation(zodiacSign)}`;
+            } else if (userState.step === 'completed') {
+                // 用户已完成所有信息输入，根据问题提供回答
+                
+                if (message.includes('love') || message.includes('relationship')) {
+                    return "For matters of the heart, I recommend exploring our <a href='#products' class='text-purple underline'>Love & Relationships</a> collection. Based on your zodiac sign, you might particularly benefit from Rose Quartz or Pink Tourmaline, which enhance love energy and emotional connection.";
+                }
+                
+                if (message.includes('career') || message.includes('success') || message.includes('money')) {
+                    return "For career and financial success, our <a href='#products' class='text-purple underline'>Career & Success</a> collection has several pieces that would align with your energy. Citrine and Tiger's Eye are excellent choices for attracting abundance and enhancing leadership qualities.";
+                }
+                
+                if (message.includes('spiritual') || message.includes('meditation') || message.includes('intuition')) {
+                    return "For spiritual growth and intuition, I recommend exploring our <a href='#products' class='text-purple underline'>Spirituality</a> collection. Amethyst and Selenite are powerful stones for enhancing meditation practice and connecting with higher consciousness.";
+                }
+                
+                if (message.includes('health') || message.includes('healing') || message.includes('energy')) {
+                    return "For health and healing, our <a href='#products' class='text-purple underline'>Health & Wellness</a> collection offers several supportive crystals. Clear Quartz is known as the 'master healer' and can be programmed for any health intention.";
+                }
+                
+                if (message.includes('blindbox') || message.includes('planetary')) {
+                    return "Our <strong>Planetary Blindbox</strong> is a special offering that contains a surprise crystal carefully selected based on your zodiac sign and current astrological transits. Each box also includes a personalized energy reading and a small gift. You can find it in our <a href='#products' class='text-purple underline'>Featured Crystals</a> section for $299.";
+                }
+                
+                if (message.includes('add') && (message.includes('cart') || message.includes('basket'))) {
+                    return "I'd be happy to help you add items to your cart! Which specific crystal piece would you like to add? You can mention the name of the product, and I'll guide you through the process.";
+                }
+                
+                if (message.includes('yes') || message.includes('sure') || message.includes('please')) {
+                    return "Perfect! You can explore all our recommended pieces in the <a href='#products' class='text-purple underline'>Featured Crystals</a> section. Each piece comes with detailed information about its metaphysical properties and how it aligns with different zodiac energies.";
+                }
+                
+                return "Thank you for your question. Based on your astrological profile, I recommend exploring our <a href='#products' class='text-purple underline'>Featured Crystals</a> collection, where you'll find pieces specifically selected to resonate with your energy. Is there a particular aspect of your life you'd like to focus on? (e.g., love, career, spirituality, health)";
+            }
+            
+            return "I'm here to help you find the perfect crystals based on your astrological profile. Could you please share your birth date (MM/DD) so we can begin?";
+        }
+        
+        // Product Filtering
+        document.querySelectorAll('.filter-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                // Remove active class from all buttons
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Add active class to clicked button
+                this.classList.add('active');
+                
+                const filter = this.getAttribute('data-filter');
+                
+                // Show/hide products based on filter
+                document.querySelectorAll('.product-item').forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Add to Cart Functionality
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function() {
+                const id = parseInt(this.getAttribute('data-id'));
+                const name = this.getAttribute('data-name');
+                const price = parseFloat(this.getAttribute('data-price'));
+                const image = this.getAttribute('data-image');
+                const category = this.closest('.product-item').getAttribute('data-category');
+                
+                console.log('Adding to cart:', {id, name, price, image, category});
+                
+                // Check if item already exists in cart
+                const existingItem = cartItems.find(item => item.id === id);
+                
+                if (existingItem) {
+                    // Increase quantity if item already exists
+                    existingItem.quantity += 1;
+                } else {
+                    // Add new item to cart
+                    cartItems.push({
+                        id: id,
+                        name: name,
+                        price: price,
+                        quantity: 1,
+                        image: image,
+                        category: category
+                    });
+                }
+                
+                console.log('Cart after adding:', cartItems);
+                
+                // Update cart display
+                updateCart();
+                
+                // Show success message
+                const message = document.createElement('div');
+                message.classList.add('fixed', 'top-20', 'right-4', 'bg-green-500', 'text-white', 'py-2', 'px-4', 'rounded-md', 'shadow-lg', 'z-50');
+                message.textContent = `${name} added to cart!`;
+                document.body.appendChild(message);
+                
+                // Remove message after 3 seconds
+                setTimeout(() => {
+                    message.remove();
+                }, 3000);
+            });
+        });
+        
+        // Cart Modal
+        document.querySelectorAll('a[href="#cart"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.getElementById('cart').classList.remove('hidden');
+            });
+        });
+        
+        document.getElementById('close-cart').addEventListener('click', function() {
+            document.getElementById('cart').classList.add('hidden');
+        });
+        
+        // Checkout Modal
+        document.getElementById('checkout-button').addEventListener('click', function() {
+            // Update order summary totals before showing checkout
+            const subtotal = document.querySelector('.cart-subtotal').textContent;
+            const total = document.querySelector('.cart-total').textContent;
+            
+            const summarySubtotal = document.querySelector('#order-summary + div .cart-subtotal');
+            const summaryTotal = document.querySelector('#order-summary + div .cart-total');
+            
+            if (summarySubtotal) summarySubtotal.textContent = subtotal;
+            if (summaryTotal) summaryTotal.textContent = total;
+            
+            document.getElementById('cart').classList.add('hidden');
+            document.getElementById('checkout').classList.remove('hidden');
+        });
+        
+        document.getElementById('close-checkout').addEventListener('click', function() {
+            document.getElementById('checkout').classList.add('hidden');
+        });
+        
+        // Payment Method Selection
+        document.querySelectorAll('input[name="payment-method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                // Hide all payment forms
+                document.getElementById('card-form').classList.add('hidden');
+                document.getElementById('paypal-form').classList.add('hidden');
+                document.getElementById('applepay-form').classList.add('hidden');
+                
+                // Remove highlight from all options
+                document.querySelectorAll('.payment-option').forEach(option => {
+                    option.classList.remove('bg-blue-50', 'border-blue-200');
+                    option.classList.add('hover:bg-blue-50', 'hover:border-blue-200');
+                });
+                
+                // Show selected payment form and highlight option
+                const selectedForm = document.getElementById(`${this.value}-form`);
+                const selectedOption = this.closest('.payment-option');
+                
+                if (selectedForm) {
+                    selectedForm.classList.remove('hidden');
+                }
+                
+                if (selectedOption) {
+                    selectedOption.classList.add('bg-blue-50', 'border-blue-200');
+                    selectedOption.classList.remove('hover:bg-blue-50', 'hover:border-blue-200');
+                }
+            });
+        });
+        
+        // Payment Processing
+        document.getElementById('pay-button').addEventListener('click', function() {
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const zip = document.getElementById('zip').value;
+            
+            // Validate form
+            if (!name || !email || !address || !city || !state || !zip) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // Get selected payment method
+            const paymentMethod = document.querySelector('input[name="payment-method"]:checked').value;
+            
+            // Process payment based on selected method
+            if (paymentMethod === 'card') {
+                // Process payment with Stripe
+                stripe.createToken(card).then(function(result) {
+                    if (result.error) {
+                        // Show error message
+                        alert(result.error.message);
+                    } else {
+                        // Send token to server (in a real app)
+                        // For demo purposes, just show success
+                        document.getElementById('checkout').classList.add('hidden');
+                        document.getElementById('success').classList.remove('hidden');
+                    }
+                });
+            } else if (paymentMethod === 'paypal') {
+                // Simulate PayPal redirect
+                alert('You would be redirected to PayPal to complete your payment.');
+                document.getElementById('checkout').classList.add('hidden');
+                document.getElementById('success').classList.remove('hidden');
+            } else if (paymentMethod === 'applepay') {
+                // Simulate Apple Pay processing
+                alert('Processing payment with Apple Pay...');
+                document.getElementById('checkout').classList.add('hidden');
+                document.getElementById('success').classList.remove('hidden');
+            }
+        });
+        
+        // Success Modal
+        document.getElementById('close-success').addEventListener('click', function() {
+            document.getElementById('success').classList.add('hidden');
+        });
+        
+        // Scroll Animation
+        function checkFadeElements() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                
+                if (elementTop < window.innerHeight - 100 && elementBottom > 0) {
+                    element.classList.add('active');
+                }
+            });
+        }
+        
+        // Initial check
+        checkFadeElements();
+        
+        // Check on scroll
+        window.addEventListener('scroll', checkFadeElements);
+        
+        // 3D Crystal Animation with Three.js
+        function initThreeJs() {
+            const canvas = document.getElementById('crystal-canvas');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            
+            const renderer = new THREE.WebGLRenderer({
+                canvas: canvas,
+                alpha: true,
+                antialias: true
+            });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            
+            // Create crystal geometry
+            const geometry = new THREE.IcosahedronGeometry(2, 1);
+            
+            // Create material with gradient
+            const material = new THREE.MeshPhongMaterial({
+                color: 0x8A2BE2,
+                emissive: 0x4B0082,
+                specular: 0xFFD700,
+                shininess: 100,
+                opacity: 0.8,
+                transparent: true,
+                wireframe: false
+            });
+            
+            // Create mesh
+            const crystal = new THREE.Mesh(geometry, material);
+            scene.add(crystal);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+            
+            const pointLight1 = new THREE.PointLight(0xFFD700, 1);
+            pointLight1.position.set(5, 5, 5);
+            scene.add(pointLight1);
+            
+            const pointLight2 = new THREE.PointLight(0x8A2BE2, 1);
+            pointLight2.position.set(-5, -5, 5);
+            scene.add(pointLight2);
+            
+            // Position camera
+            camera.position.z = 5;
+            
+            // Animation function
+            function animate() {
+                requestAnimationFrame(animate);
+                
+                // Rotate crystal
+                crystal.rotation.x += 0.005;
+                crystal.rotation.y += 0.01;
+                
+                renderer.render(scene, camera);
+            }
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+            
+            // Start animation
+            animate();
+        }
+        
+        // Initialize Three.js when page loads
+        window.addEventListener('load', initThreeJs);
+    </script>
+
+</body></html>
